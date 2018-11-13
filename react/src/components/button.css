@@ -1,0 +1,13 @@
+.button {
+  border-style: solid;
+  border-color: black;
+  border-radius: 8px;
+  height: 8vh;
+  margin: 15px;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  color: black;
+  background-color: lightcoral;
+}
