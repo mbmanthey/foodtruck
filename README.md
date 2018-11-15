@@ -1,1 +1,1 @@
-Creating a food truck web appplication to learn different topics in web development.
+Creating a food truck web application to learn different topics in web development.
