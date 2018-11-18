@@ -1,0 +1,15 @@
+.overlay {
+  z-index: 10;
+}
+
+.identify {
+  z-index: inherit;
+  display: inline-flex;
+  height: 10vh;
+  width: 10vh;
+  background-color: grey;
+  opacity: 0.9;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50px;
+}

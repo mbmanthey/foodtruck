@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Marker from './marker'
 import mapboxgl from 'mapbox-gl';
+import Overlay from './overlay';
 import { config } from '@fortawesome/fontawesome-svg-core';
 
 const keys = require('./../config.json');
@@ -16,6 +17,7 @@ class MapContainer extends Component {
       latitude: null,
       zoom: 15,
       error: null,
+      mapLoaded: false,
     };
   }
 
@@ -65,7 +67,8 @@ class MapContainer extends Component {
       this.setState({
         longitude: lng.toFixed(4),
         latitude: lat.toFixed(4),
-        zoom: this.map.getZoom().toFixed(2)
+        zoom: this.map.getZoom().toFixed(2),
+        mapLoaded: true
       })
     })
 
@@ -74,6 +77,8 @@ class MapContainer extends Component {
       console.log("clicked");
       this.setMarker();
     })
+
+
   }
 
   getLocalTrucks() {
@@ -99,7 +104,14 @@ class MapContainer extends Component {
       width: '100%'
     };
 
-    return <div style={style} ref={el => this.mapContainer = el}/>
+    return (
+      <div>
+          <div style={{display: 'inline-block', position: 'absolute', zIndex: '10'}}>
+            <Overlay mapLoaded={this.state.mapLoaded}/>
+          </div>
+          <div style={style} ref={el => this.mapContainer = el}/>
+      </div>
+   )
   }
 }
 export default MapContainer;
