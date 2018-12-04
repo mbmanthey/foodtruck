@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	address         = "localhost:50051"
+	address         = "localhost:50052"
 	defaultFilename = "test.json"
 )
 
@@ -34,6 +34,10 @@ func main() {
 	defer conn.Close()
 	client := pb.NewTruckServiceClient(conn)
 
+	_, err = client.DeleteAll(context.Background(), &pb.GetRequest{})
+	if err != nil {
+		log.Fatalf("Could not delete trucks: %v", err)
+	}
 	file := defaultFilename
 	if len(os.Args) > 1 {
 		file = os.Args[1]

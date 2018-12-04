@@ -15,6 +15,8 @@ package proto;
 service TruckService {
   rpc Create (Truck) returns (Response) {}
   rpc GetAll (GetRequest) returns (Response) {}
+  rpc Remove (Truck) returns (Response) {}
+  rpc RemoveAll (GetRequest) returns (Response) {}
 }
 
 message GetRequest {}

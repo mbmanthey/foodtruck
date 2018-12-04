@@ -44,3 +44,13 @@ func (s *Service) Get(ctx context.Context, req *pb.GetRequest) (*pb.Response, er
 	}
 	return &pb.Response{Created: false, Truck: truck}, nil
 }
+
+func (s *Service) DeleteAll(ctx context.Context, req *pb.GetRequest) (*pb.Response, error) {
+	sClone := &TruckRepository{s.Session.Clone()}
+	defer sClone.Close()
+	err := sClone.DeleteAll()
+	if err != nil {
+		return nil, err
+	}
+	return &pb.Response{Created: false, Trucks: nil}, nil
+}

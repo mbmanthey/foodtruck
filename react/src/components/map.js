@@ -3,13 +3,11 @@ import ReactDOM from 'react-dom';
 import Marker from './marker'
 import mapboxgl from 'mapbox-gl';
 import Overlay from './overlay';
-import { config } from '@fortawesome/fontawesome-svg-core';
 
 const keys = require('./../config.json');
 mapboxgl.accessToken = keys.mapbox;
 
 class MapContainer extends Component {
-  markerContainer;
   constructor(props) {
     super(props);
     this.state = {
@@ -18,20 +16,17 @@ class MapContainer extends Component {
       zoom: 15,
       error: null,
       mapLoaded: false,
+      trucks: [],
     };
   }
 
-  setMarker() {
-    if (true) {
-      ReactDOM.render(
-        React.createElement(
-          Marker
-        ),
-        this.markerContainer
-      )
-    } else {
-      this.markerContainer.innerHTML = '';
-    }
+  setMarker(marker) {
+    ReactDOM.render(
+      React.createElement(
+        Marker
+      ),
+      marker
+    )
   }
 
   componentDidMount() {
@@ -51,42 +46,54 @@ class MapContainer extends Component {
   }
 
   initializeMap() {
-    this.markerContainer = document.createElement('div')
     this.map = new mapboxgl.Map({
       container: this.mapContainer,
       style: 'mapbox://styles/mapbox/streets-v9',
       center: [this.state.longitude, this.state.latitude],
       zoom: this.state.zoom
     })
-
-    const marker = new mapboxgl.Marker(this.markerContainer).setLngLat([0,0]).addTo(this.map)
-
+    this.setState({mapLoaded: true})
     this.map.on('move', () => {
       const { lng, lat } = this.map.getCenter();
-
       this.setState({
         longitude: lng.toFixed(4),
         latitude: lat.toFixed(4),
         zoom: this.map.getZoom().toFixed(2),
-        mapLoaded: true
       })
     })
 
     this.map.on('click', (event) => {
-      marker.setLngLat(event.lngLat);
+      // this.addMarker(event.lngLat)
+      this.addTrucks()
       console.log("clicked");
-      this.setMarker();
     })
-
-
   }
 
+  addMarker(lngLat) {
+    console.log(lngLat)
+    var markerContainer = document.createElement('div')
+    var marker = new mapboxgl.Marker(markerContainer).setLngLat([0,0]).addTo(this.map) 
+    marker.setLngLat(lngLat);
+    this.setMarker(markerContainer);
+  }
+
+  addTrucks() {
+    console.log(this.state.trucks)
+    for (let truck of this.state.trucks) {
+      console.log(truck)
+      let lngLat = new mapboxgl.LngLat(truck.Location.longitude, truck.Location.latitude);
+      this.addMarker(lngLat)
+    }
+
+  }
   getLocalTrucks() {
     fetch('http://localhost:50051/api/truck', {
       method: "GET",
     }).then(result => result.json()
     ).then(data => {
-      console.log(data)
+      // console.log(data);
+      this.setState({trucks: data})
+      //this.addTrucks()
     })
   }
 

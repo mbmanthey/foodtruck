@@ -53,6 +53,11 @@ func (repo *TruckRepository) Get(id string) (*pb.Truck, error) {
 	return truck, err
 }
 
+func (repo *TruckRepository) DeleteAll() error {
+	_, error := repo.collection().RemoveAll(nil)
+	return error
+}
+
 func (repo *TruckRepository) collection() *mgo.Collection {
 	return repo.session.DB(dbName).C(collection)
 }

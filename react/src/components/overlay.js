@@ -15,8 +15,9 @@ export class Overlay extends React.Component {
     if (this.props.mapLoaded) {
       return (
         <div className='overlay'>
-          <div className='identify'>
+          <div className='pin'>
             <FontAwesomeIcon icon={faMapPin} size="3x"/>
+            <h1 style={{padding:'5px'}}>Spot</h1>
           </div>
         </div>
       );

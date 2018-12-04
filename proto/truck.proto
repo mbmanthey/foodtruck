@@ -9,6 +9,7 @@ service TruckService {
   rpc Create (Truck) returns (Response) {}
   rpc GetAll (GetRequest) returns (Response) {}
   rpc Get(GetRequest) returns (Response) {}
+  rpc DeleteAll(GetRequest) returns (Response) {}
 }
 
 message GetRequest {

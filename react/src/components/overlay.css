@@ -2,14 +2,14 @@
   z-index: 10;
 }
 
-.identify {
-  z-index: inherit;
+.pin {
   display: inline-flex;
   height: 10vh;
-  width: 10vh;
+  width: 100%;
   background-color: grey;
   opacity: 0.9;
   align-items: center;
-  justify-content: center;
-  border-radius: 50px;
+  justify-content: left;
+  padding-left: 1vh;
+  border-radius: 15px;
 }
