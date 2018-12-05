@@ -8,7 +8,7 @@ class MainRoute extends Component {
   render() {
     return (
       <Switch>
-        <Route exact path='/' component={LandingPage}/>
+        <Route exact path='/' component={MapPage}/>
         <Route path='/map' component={MapPage}/>
       </Switch>
     );

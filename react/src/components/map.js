@@ -16,8 +16,14 @@ class MapContainer extends Component {
       zoom: 15,
       error: null,
       mapLoaded: false,
+      spotting: false,
       trucks: [],
     };
+    this.setSpotting = this.setSpotting.bind(this)
+  }
+
+  setSpotting() {
+    this.setState({spotting:true})
   }
 
   setMarker(marker) {
@@ -63,37 +69,34 @@ class MapContainer extends Component {
     })
 
     this.map.on('click', (event) => {
-      // this.addMarker(event.lngLat)
-      this.addTrucks()
-      console.log("clicked");
+      if (this.state.spotting) {
+        this.addMarker(event.lngLat)
+      }
     })
   }
 
   addMarker(lngLat) {
-    console.log(lngLat)
     var markerContainer = document.createElement('div')
     var marker = new mapboxgl.Marker(markerContainer).setLngLat([0,0]).addTo(this.map) 
-    marker.setLngLat(lngLat);
-    this.setMarker(markerContainer);
+    marker.setLngLat(lngLat)
+    this.setMarker(markerContainer)
+    this.setState({spotting:false})
   }
 
-  addTrucks() {
-    console.log(this.state.trucks)
-    for (let truck of this.state.trucks) {
-      console.log(truck)
+  addTrucks(trucks) {
+    for (let truck of trucks) {
       let lngLat = new mapboxgl.LngLat(truck.Location.longitude, truck.Location.latitude);
       this.addMarker(lngLat)
     }
-
   }
+
   getLocalTrucks() {
     fetch('http://localhost:50051/api/truck', {
       method: "GET",
     }).then(result => result.json()
     ).then(data => {
-      // console.log(data);
       this.setState({trucks: data})
-      //this.addTrucks()
+      this.addTrucks(data)
     })
   }
 
@@ -114,7 +117,7 @@ class MapContainer extends Component {
     return (
       <div>
           <div style={{display: 'inline-block', position: 'absolute', zIndex: '10'}}>
-            <Overlay mapLoaded={this.state.mapLoaded}/>
+            <Overlay mapLoaded={this.state.mapLoaded} onClick={this.setSpotting}/>
           </div>
           <div style={style} ref={el => this.mapContainer = el}/>
       </div>
