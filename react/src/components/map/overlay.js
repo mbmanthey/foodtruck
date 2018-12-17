@@ -17,7 +17,7 @@ export class Overlay extends React.Component {
         <div onClick={this.props.onClick} className='overlay'>
           <div className='pin'>
             <FontAwesomeIcon icon={faMapPin} size="3x"/>
-            <h1 style={{padding:'5px'}}>Spot</h1>
+            <h1 style={{padding:'5px'}}>Add</h1>
           </div>
         </div>
       );

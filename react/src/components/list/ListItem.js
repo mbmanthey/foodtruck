@@ -6,7 +6,11 @@ export class ListItem extends React.Component {
   }
 
   render() {
-    return (null);
+    return (
+      <div>
+        {this.props.truck.Name}
+      </div>
+    );
   }
 } 
 

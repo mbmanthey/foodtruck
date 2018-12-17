@@ -4,7 +4,7 @@ import Marker from './marker'
 import mapboxgl from 'mapbox-gl';
 import Overlay from './overlay';
 
-const keys = require('./../config.json');
+const keys = require('./../../config.json');
 mapboxgl.accessToken = keys.mapbox;
 
 class MapContainer extends Component {
@@ -16,14 +16,14 @@ class MapContainer extends Component {
       zoom: 15,
       error: null,
       mapLoaded: false,
-      spotting: false,
+      adding: false,
       trucks: [],
     };
-    this.setSpotting = this.setSpotting.bind(this)
+    this.setadding = this.setadding.bind(this)
   }
 
-  setSpotting() {
-    this.setState({spotting:true})
+  setadding() {
+    this.setState({adding:true})
   }
 
   setMarker(marker) {
@@ -69,7 +69,7 @@ class MapContainer extends Component {
     })
 
     this.map.on('click', (event) => {
-      if (this.state.spotting) {
+      if (this.state.adding) {
         this.addMarker(event.lngLat)
       }
     })
@@ -80,12 +80,12 @@ class MapContainer extends Component {
     var marker = new mapboxgl.Marker(markerContainer).setLngLat([0,0]).addTo(this.map) 
     marker.setLngLat(lngLat)
     this.setMarker(markerContainer)
-    this.setState({spotting:false})
+    this.setState({adding:false})
   }
 
   addTrucks(trucks) {
     for (let truck of trucks) {
-      let lngLat = new mapboxgl.LngLat(truck.Location.longitude, truck.Location.latitude);
+      let lngLat = new mapboxgl.LngLat(truck.Location.longitude, truck.Location.latitude)
       this.addMarker(lngLat)
     }
   }
@@ -95,6 +95,7 @@ class MapContainer extends Component {
       method: "GET",
     }).then(result => result.json()
     ).then(data => {
+      console.log(data)
       this.setState({trucks: data})
       this.addTrucks(data)
     })
@@ -117,7 +118,7 @@ class MapContainer extends Component {
     return (
       <div>
           <div style={{display: 'inline-block', position: 'absolute', zIndex: '10'}}>
-            <Overlay mapLoaded={this.state.mapLoaded} onClick={this.setSpotting}/>
+            <Overlay mapLoaded={this.state.mapLoaded} onClick={this.setadding}/>
           </div>
           <div style={style} ref={el => this.mapContainer = el}/>
       </div>

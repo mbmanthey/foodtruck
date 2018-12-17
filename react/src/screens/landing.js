@@ -6,6 +6,7 @@ class LandingPage extends Component {
     return (
       <Switch>
         <div>
+          <Link to="/list"><button>List</button></Link>
           <Link to='/map'><button>Map</button></Link>
         </div>
       </Switch>

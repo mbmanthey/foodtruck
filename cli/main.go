@@ -8,6 +8,7 @@ import (
 	"os"
 
 	pb "github.com/mbmanthey/foodtruck/proto"
+	uuid "github.com/satori/go.uuid"
 	"google.golang.org/grpc"
 )
 
@@ -42,11 +43,11 @@ func main() {
 	if len(os.Args) > 1 {
 		file = os.Args[1]
 	}
-
 	truck, err := parseFile(file)
 	if err != nil {
 		log.Fatalf("Could not parse: %v", err)
 	}
+	truck.ID = uuid.Must(uuid.NewV4()).String()
 	r, err := client.Create(context.Background(), truck)
 	if err != nil {
 		log.Fatalf("Could not connect: %v", err)
