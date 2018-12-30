@@ -19,6 +19,7 @@ type TruckRepository struct {
 type Repository interface {
 	Create(*pb.Truck) error
 	GetAll() ([]*pb.Truck, error)
+	Get(id string) (*pb.Truck, error)
 	Close()
 }
 

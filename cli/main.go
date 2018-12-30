@@ -34,11 +34,6 @@ func main() {
 	}
 	defer conn.Close()
 	client := pb.NewTruckServiceClient(conn)
-
-	_, err = client.DeleteAll(context.Background(), &pb.GetRequest{})
-	if err != nil {
-		log.Fatalf("Could not delete trucks: %v", err)
-	}
 	file := defaultFilename
 	if len(os.Args) > 1 {
 		file = os.Args[1]
@@ -53,9 +48,6 @@ func main() {
 		log.Fatalf("Could not connect: %v", err)
 	}
 	log.Printf("Created: %t", r.Created)
-	if err != nil {
-		log.Fatalf("Could not list trucks: %v", err)
-	}
 	getAll, err := client.GetAll(context.Background(), &pb.GetRequest{})
 	if err != nil {
 		log.Fatalf("Could not list trucks: %v", err)

@@ -59,7 +59,7 @@ func GetTruck(w http.ResponseWriter, r *http.Request) {
 	client := pb.NewTruckServiceClient(conn)
 	get, err := client.Get(context.Background(), &pb.GetRequest{ID: params["ID"]})
 	if err != nil {
-		log.Fatalf("Could not get truck: $v", err)
+		log.Fatalf("Could not get truck: %v", err)
 	}
 	json.NewEncoder(w).Encode(get.Truck)
 }
