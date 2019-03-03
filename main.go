@@ -11,6 +11,5 @@ import (
 func main() {
 	go rest.NewServer()
 	go grpc.NewServer()
-	http.Handle("/", http.FileServer(http.Dir("./react/build")))
 	log.Fatal(http.ListenAndServe(":3000", nil))
 }

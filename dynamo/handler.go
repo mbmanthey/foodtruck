@@ -46,3 +46,11 @@ func (s *Service) Delete(ctx context.Context, req *pb.GetRequest) (*pb.Response,
 	}
 	return &pb.Response{Created: false, Trucks: nil}, nil
 }
+
+func (s *Service) DeleteAll(ctx context.Context, req *pb.GetRequest) (*pb.Response, error) {
+	err := s.GetRepo().DeleteAll()
+	if err != nil {
+		return nil, err
+	}
+	return &pb.Response{Created: false, Trucks: nil}, nil
+}

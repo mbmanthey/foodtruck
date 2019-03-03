@@ -24,6 +24,7 @@ type Repository interface {
 	GetAll() ([]*pb.Truck, error)
 	Get(id string) (*pb.Truck, error)
 	Delete(id string) error
+	DeleteAll() error
 }
 
 //Create adds a truck to the mongodb.
@@ -59,6 +60,11 @@ func (repo *TruckRepository) Get(id string) (*pb.Truck, error) {
 	svc := dynamodb.New(repo.session)
 	result, err := svc.GetItem(&dynamodb.GetItemInput{
 		TableName: aws.String(tableName),
+		Key: map[string]*dynamodb.AttributeValue{
+			"ID": {
+				N: aws.String(id),
+			},
+		},
 	})
 	err = dynamodbattribute.UnmarshalMap(result.Item, &truck)
 	return truck, err
@@ -75,5 +81,45 @@ func (repo *TruckRepository) Delete(id string) error {
 		},
 	}
 	_, err := svc.DeleteItem(input)
+	return err
+}
+
+func (repo *TruckRepository) DeleteAll() error {
+	svc := dynamodb.New(repo.session)
+	_, err := svc.DeleteTable(&dynamodb.DeleteTableInput{
+		TableName: aws.String(tableName),
+	})
+	if err != nil {
+		fmt.Println("Got error deleting table:")
+		fmt.Println(err.Error())
+	}
+	tableInput := &dynamodb.CreateTableInput{
+		AttributeDefinitions: []*dynamodb.AttributeDefinition{
+			{
+				AttributeName: aws.String("Name"),
+				AttributeType: aws.String("S"),
+			},
+			{
+				AttributeName: aws.String("Timestamp"),
+				AttributeType: aws.String("N"),
+			},
+			{
+				AttributeName: aws.String("Longitude"),
+				AttributeType: aws.String("N"),
+			},
+			{
+				AttributeName: aws.String("Latitude"),
+				AttributeType: aws.String("N"),
+			},
+		},
+		KeySchema: []*dynamodb.KeySchemaElement{
+			{
+				AttributeName: aws.String("ID"),
+				KeyType:       aws.String("HASH"),
+			},
+		},
+		TableName: aws.String(tableName),
+	}
+	_, err = svc.CreateTable(tableInput)
 	return err
 }
