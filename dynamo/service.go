@@ -96,20 +96,8 @@ func (repo *TruckRepository) DeleteAll() error {
 	tableInput := &dynamodb.CreateTableInput{
 		AttributeDefinitions: []*dynamodb.AttributeDefinition{
 			{
-				AttributeName: aws.String("Name"),
+				AttributeName: aws.String("ID"),
 				AttributeType: aws.String("S"),
-			},
-			{
-				AttributeName: aws.String("Timestamp"),
-				AttributeType: aws.String("N"),
-			},
-			{
-				AttributeName: aws.String("Longitude"),
-				AttributeType: aws.String("N"),
-			},
-			{
-				AttributeName: aws.String("Latitude"),
-				AttributeType: aws.String("N"),
 			},
 		},
 		KeySchema: []*dynamodb.KeySchemaElement{
